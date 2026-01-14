@@ -1,0 +1,27 @@
+import java.util.*;
+public class Infinity {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        int[] arr = new int[n];
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = sc.nextInt();
+        }
+        int ans = candy(n, arr);
+        System.out.println(ans);
+    }
+    public static int candy(int n, int[] arr){
+        HashSet<Integer> set = new HashSet<>();
+        for(int i=0; i<n; i++){
+            set.add(arr[i]);
+        }
+        if(set.size() <= n/2){
+            return set.size();
+        }
+        if(n/2 < set.size()){
+            return n/2;
+        }
+        else return -1;
+    }
+}
+
