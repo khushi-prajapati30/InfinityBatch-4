@@ -1,0 +1,22 @@
+class Solution {
+    public int[] deckRevealedIncreasing(int[] deck) {
+        Deque<Integer> dq = new ArrayDeque<>();
+        Arrays.sort(deck);
+
+        dq.addLast(deck[deck.length-1]);
+
+        for(int i=deck.length-2; i>=0; i--){
+            if(!dq.isEmpty()){
+                int ele = dq.pop();
+                dq.addLast(ele);
+                dq.offer(deck[i]);
+            }
+        }
+        int i=deck.length-1;
+        while(!dq.isEmpty()){
+            deck[i] = dq.pop();
+            i--;
+        }
+        return deck;
+    }
+}
