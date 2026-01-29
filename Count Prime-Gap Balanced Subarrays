@@ -1,0 +1,64 @@
+class Solution {
+    public int primeSubarray(int[] nums, int k) {
+        int MAX = 50005;
+        int n = nums.length;
+        int c = 0;
+        boolean[] prime = isPrime(MAX);
+        Deque<Integer> minDeque = new ArrayDeque<>();
+        Deque<Integer> maxDeque = new ArrayDeque<>();
+        int primeCount = 0;
+        int prev = -1,curr =-1;
+        int left =0,right=0;
+        while(right<n){
+            if(prime[nums[right]]){
+                while(!minDeque.isEmpty() && nums[minDeque.peekLast()]>nums[right]){
+                    minDeque.pollLast();
+                }
+                minDeque.addLast(right);
+                while(!maxDeque.isEmpty() && nums[maxDeque.peekLast()] < nums[right]){
+                    maxDeque.pollLast();
+                }
+                maxDeque.addLast(right);
+
+                primeCount++;
+                prev = curr;
+                curr = right;
+            }
+            while(!maxDeque.isEmpty() && !minDeque.isEmpty() &&
+            nums[maxDeque.peekFirst()]-nums[minDeque.peekFirst()]>k){
+                if(prime[nums[left]]){
+                    primeCount--;
+                }
+                if (!minDeque.isEmpty() && minDeque.peekFirst() == left) {
+                    minDeque.pollFirst();
+                }
+
+                if (!maxDeque.isEmpty() && maxDeque.peekFirst() == left) {
+                    maxDeque.pollFirst();
+                }
+
+                left++;
+            }
+            if (primeCount >= 2) {
+                c += Math.max(0,prev-left+1);
+            }
+            right++;
+        }
+        return c;
+    }
+    public boolean[] isPrime(int num){
+        boolean[] prime = new boolean[num+1];
+        Arrays.fill(prime,true);
+        prime[0] = prime[1] = false;
+        
+        for(int i=2;i*i<=num;i++){
+            if(prime[i]){
+                for(int j=i*i;j<=num;j+=i){
+                    prime[j] = false;
+                }
+            }
+        }
+        return prime;
+    }
+}
+
